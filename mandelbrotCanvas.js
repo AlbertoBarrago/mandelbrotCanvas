@@ -51,7 +51,7 @@ class WorkerPool {
             this.idleWorkers.push(worker);
         } else {
             let [work, resolver, rejector] = this.workQueue.shift();
-            this.workerMap.set(Worker, [resolver, rejector]);
+            this.workerMap.set(worker, [resolver, rejector]);
             worker.postMessage(work);
         }
 
@@ -90,8 +90,8 @@ class PageState {
      s.perPixel = parseFloat(u.searchParams.get("pp"));
      s.maxIterations = parseFloat(u.searchParams.get("it"));
 
-     return (isNaN(s.cx) || isNaN(s.cy) || isNaN(s.perPixel) || isNaN(s.maxIterations)) 
-            ? null 
+     return (isNaN(s.cx) || isNaN(s.cy) || isNaN(s.perPixel) || isNaN(s.maxIterations))
+            ? null
             : s;
  }
 
@@ -115,8 +115,8 @@ class MandelbrotCanvas {
         this.workerPool = new WorkerPool(NUMWORKERS, "mandelbrotWorker.js")
 
         this.tiles = null;
-        this.pendingRender = null; 
-        this.wantsRender = false; 
+        this.pendingRender = null;
+        this.wantsRender = false;
         this.resixeTimer = null;
         this.colorTable = null;
 
@@ -137,7 +137,7 @@ class MandelbrotCanvas {
 
     setSize() {
         this.width = this.canvas.width = window.innerWidth;
-        this.height = this.canvas.height = window.innerHeight; 
+        this.height = this.canvas.height = window.innerHeight;
         this.tiles = [...Tile.tiles(this.width, this.height, ROWS, COLS)];
     }
 
@@ -159,7 +159,7 @@ class MandelbrotCanvas {
 
     render() {
         if(this.pendingRender) {
-            this.wantsRender = true; 
+            this.wantsRender = true;
             return;
         }
 
@@ -177,7 +177,7 @@ class MandelbrotCanvas {
 
         this.pendingRender = Promise.all(promises).then(response => {
             let min = maxIterations, max = 0;
-            for(let r of responses) {
+            for(let r of response) {
                 if(r.min < min) min = r.min;
                 if(r.max > max) max = r.max;
             }
@@ -191,7 +191,7 @@ class MandelbrotCanvas {
                     this.colorTable[min] = 0xFF000000;
                 } else {
                     this.colorTable[min] = 0;
-                } 
+                }
             } else {
                 let maxLog = Math.log(1+max-min);
                 for(let i = min; i <= max; i++) {
@@ -199,13 +199,13 @@ class MandelbrotCanvas {
                 }
             }
 
-            for(let r of responses) {
+            for(let r of response) {
                 let iterations = new Uint32Array(r.imageData.data.buffer);
                 for(let i = 0; i < iterations.length; i++) {
                     iterations[i] = this.colorTable[iterations[i]];
                 }
                 this.canvas.style.transform = "";
-                for(let r of responses) {
+                for(let r of response) {
                     this.context.putImageData(r.imageData, r.tile.x, r.tile.y);
                 }
             }
@@ -234,10 +234,10 @@ class MandelbrotCanvas {
 
     handleKey(event) {
         switch(event.key) {
-            case "Escape": 
+            case "Escape":
                 this.setState(PageState.initialState());
                 break;
-            case "+": 
+            case "+":
                 this.setState(s => {
                     s.maxIterations = Math.round(s.maxIterations*1.5);
                 })
@@ -248,7 +248,7 @@ class MandelbrotCanvas {
                     if(s.maxIterations < 1) s.maxIterations = 1;
                 })
                 break;
-            case "o":   
+            case "o":
                 this.setState(s => s.perPixel *= 2);
                 break;
             case "ArrowUp":
@@ -257,10 +257,10 @@ class MandelbrotCanvas {
             case "ArrowDown":
                 this.setState(s => s.cy += this.height/10 * s.perPixel);
                 break;
-            case "ArrowLeft": 
+            case "ArrowLeft":
                 this.setState(s => s.cx -= this.width/10 * s.perPixel);
                 break;
-            case "ArrowRight": 
+            case "ArrowRight":
                  this.setState(s => s.cx *= this.width/10 * s.perPixel);
                 break;
 
@@ -301,12 +301,12 @@ class MandelbrotCanvas {
             }
 
         };
-    
+
 
         this.canvas.addEventListener("pointerMove", pointerMoveHandler);
         this.canvas.addEventListener("pointerUp", pointerUpHandler);
     }
-   
+
 }
 
 
