@@ -51,7 +51,7 @@ class WorkerPool {
             this.idleWorkers.push(worker);
         } else {
             let [work, resolver, rejector] = this.workQueue.shift();
-            this.workerMap.set(Worker, [resolver, rejector]);
+            this.workerMap.set(worker, [resolver, rejector]);
             worker.postMessage(work);
         }
 
