@@ -26,7 +26,6 @@ class Tile {
 }
 
 class WorkerPool {
-    debugger;
     constructor(numWorkers, workerSource) {
         this.idleWorkers = [];
         this.workQueue = [];
@@ -154,7 +153,7 @@ class MandelbrotCanvas {
         this.render();
 
         if(save) {
-            history.pushState(this.state.toUrl());
+            history.pushState(this.state, "", this.state.toUrl());
         }
     }
 
@@ -189,7 +188,7 @@ class MandelbrotCanvas {
 
             if(min === max) {
                 if(min === maxIterations) {
-                    this.colorTable[min] = 0xFF000000;
+                    this.colorTable[min] = 0XFF000000;
                 } else {
                     this.colorTable[min] = 0;
                 } 
