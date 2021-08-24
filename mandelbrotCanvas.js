@@ -26,6 +26,7 @@ class Tile {
 }
 
 class WorkerPool {
+    debugger;
     constructor(numWorkers, workerSource) {
         this.idleWorkers = [];
         this.workQueue = [];
