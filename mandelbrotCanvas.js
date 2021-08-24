@@ -1,14 +1,14 @@
 class Tile {
-    constructor(x, y, widht, height) {
+    constructor(x, y, width, height) {
         this.x = x;
         this.y = y;
-        this.widht = widht;
+        this.width = width;
         this.height = height;
     }
 
-    static *tiles(widht, height, numRows, numCols) {
-        let columnWidth = Math.ceil(widht / numCols);
-        let rowHeight = Math.ceil(widht / numRows);
+    static *tiles(width, height, numRows, numCols) {
+        let columnWidth = Math.ceil(width / numCols);
+        let rowHeight = Math.ceil(width / numRows);
 
         for(let row = 0; row < numRows; row++) {
             let tileHeight = (row < numRows - 1)
@@ -17,7 +17,7 @@ class Tile {
             for(let col = 0; col < numCols; col++) {
                 let tileWidth = (col < numCols -1)
                     ? columnWidth
-                    : widht - columnWidth * (numCols -1);
+                    : width - columnWidth * (numCols -1);
 
                 yield new Tile(col * columnWidth, row * rowHeight, tileWidth, tileHeight);
             }
@@ -136,9 +136,9 @@ class MandelbrotCanvas {
 
 
     setSize() {
-        this.widht = this.canvas.width = window.innerWidth;
+        this.width = this.canvas.width = window.innerWidth;
         this.height = this.canvas.height = window.innerHeight; 
-        this.tiles = [...Tile.tiles(this.widht, this.height, ROWS, COLS)];
+        this.tiles = [...Tile.tiles(this.width, this.height, ROWS, COLS)];
     }
 
     setState(f, save=true) {
@@ -164,7 +164,7 @@ class MandelbrotCanvas {
         }
 
         let {cx, cy, perPixel,  maxIterations} = this.state;
-        let x0 = cx - perPixel * this.widht/2;
+        let x0 = cx - perPixel * this.width/2;
         let y0 = cy - perPixel * this.height/2;
 
         let promises = this.tiles.map(tile => this.workerPool.addWork({
@@ -204,7 +204,7 @@ class MandelbrotCanvas {
                 for(let i = 0; i < iterations.length; i++) {
                     iterations[i] = this.colorTable[iterations[i]];
                 }
-                this.canvas.style.trasnform = "";
+                this.canvas.style.transform = "";
                 for(let r of responses) {
                     this.context.putImageData(r.imageData, r.tile.x, r.tile.y);
                 }
@@ -288,7 +288,7 @@ class MandelbrotCanvas {
             if(dx > 10 || dy > 10 || dt > 500) {
                 this.setState({cx: cx - dx*perPixel, cy: cy - dy*perPixel});
             } else {
-                let cdx = x0 - this.widht/2;
+                let cdx = x0 - this.width/2;
                 let cdy = y0 - this.height/2;
 
                 this.canvas.style.trasnform = `translate(${-cdx}px, ${-cdy}px scale(2))`;
