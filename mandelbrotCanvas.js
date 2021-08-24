@@ -60,7 +60,7 @@ class WorkerPool {
 
     addWork(work) {
         return new Promise((resolve,reject) => {
-            if(this.idleWorkers.lenght > 0 ) {
+            if(this.idleWorkers.length > 0 ) {
                 let worker = this.idleWorkers.pop();
                 this.workerMap.set(worker, [resolve, reject]);
                 worker.postMessage(work);
@@ -182,26 +182,26 @@ class MandelbrotCanvas {
                 if(r.max > max) max = r.max;
             }
 
-            if(!this.colorTable || this.colorTable.lenght !== maxIterations+1) {
+            if(!this.colorTable || this.colorTable.length !== maxIterations+1) {
                 this.colorTable = new Uint32Array(maxIterations+1);
             }
 
             if(min === max) {
                 if(min === maxIterations) {
-                    this.colorTable[min] = 0XFF000000;
+                    this.colorTable[min] = 0xFF000000;
                 } else {
                     this.colorTable[min] = 0;
                 } 
             } else {
                 let maxLog = Math.log(1+max-min);
                 for(let i = min; i <= max; i++) {
-                    this.colorTable[i] = (Math.ceil(Math.log(1+i-min)/maxLog * 255) << 24)
+                    this.colorTable[i] = (Math.ceil(Math.log(1+i-min)/maxLog * 255) << 24);
                 }
             }
 
             for(let r of responses) {
                 let iterations = new Uint32Array(r.imageData.data.buffer);
-                for(let i = 0; i < iterations.lenght; i++) {
+                for(let i = 0; i < iterations.length; i++) {
                     iterations[i] = this.colorTable[iterations[i]];
                 }
                 this.canvas.style.trasnform = "";
