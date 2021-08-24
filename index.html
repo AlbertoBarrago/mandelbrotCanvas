@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MandelBrotExp</title>
+
+</head>
+<body>
+    
+</body>
+
+<script src="js/mandelbrotCanvas.js"></script>
+
+<script>
+    let canvas = document.createElement("canvas");
+    document.body.append(canvas);
+    document.body.style = "margin:0";
+    canvas.style.width= "100%";
+    canvas.style.height = "100%";
+    new MandelbrotCanvas(canvas);
+</script>
+</html>
