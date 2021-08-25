@@ -30,7 +30,7 @@ class WorkerPool {
         this.idleWorkers = [];
         this.workQueue = [];
         this.workerMap = new Map();
-        console.log(numWorkers);
+      
         for(let i = 0; i < numWorkers; i++) {
             let worker = new Worker(workerSource);
             worker.onmessage = message => {
