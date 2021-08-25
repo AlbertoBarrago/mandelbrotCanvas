@@ -25,5 +25,5 @@
 
 ## License
 
-[MIT](LICENSE) © Alberto Barrago
+[MIT](https://mit-license.org/) © Alberto Barrago
 
