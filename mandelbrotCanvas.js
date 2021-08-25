@@ -30,7 +30,7 @@ class WorkerPool {
         this.idleWorkers = [];
         this.workQueue = [];
         this.workerMap = new Map();
-
+        console.log(numWorkers);
         for(let i = 0; i < numWorkers; i++) {
             let worker = new Worker(workerSource);
             worker.onmessage = message => {
@@ -106,7 +106,7 @@ class PageState {
 
 }
 
-const ROWS = 3, COLS = 4, NUMWORKERS = navigator.hardwareConcurrency || 2;
+const ROWS = 2, COLS = 3, NUMWORKERS = navigator.hardwareConcurrency || 2;
 
 class MandelbrotCanvas {
     constructor(canvas) {
@@ -175,9 +175,9 @@ class MandelbrotCanvas {
             maxIterations: maxIterations
         }));
 
-        this.pendingRender = Promise.all(promises).then(response => {
+        this.pendingRender = Promise.all(promises).then(responses => {
             let min = maxIterations, max = 0;
-            for(let r of response) {
+            for(let r of responses) {
                 if(r.min < min) min = r.min;
                 if(r.max > max) max = r.max;
             }
@@ -199,13 +199,13 @@ class MandelbrotCanvas {
                 }
             }
 
-            for(let r of response) {
+            for(let r of responses) {
                 let iterations = new Uint32Array(r.imageData.data.buffer);
                 for(let i = 0; i < iterations.length; i++) {
                     iterations[i] = this.colorTable[iterations[i]];
                 }
                 this.canvas.style.transform = "";
-                for(let r of response) {
+                for(let r of responses) {
                     this.context.putImageData(r.imageData, r.tile.x, r.tile.y);
                 }
             }
