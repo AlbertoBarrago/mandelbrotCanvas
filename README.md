@@ -1,3 +1,12 @@
+ # MandelbrotSet
+ work in progress...
+
+ ## Dummy Step
+  - Download or clone repo 
+  - Start server: python -m SimpleHTTPServer 8000 
+  - Enjoy
+
+
  _How to use it_
 
 ```js
@@ -9,4 +18,12 @@
     new MandelbrotCanvas(canvas);
 ```
 
-work in progess... not works for now :(
+### Contributors
+
+[@GCinellu](https://github.com/GCinellu).
+
+
+## License
+
+[MIT](LICENSE) © Alberto Barrago
+
